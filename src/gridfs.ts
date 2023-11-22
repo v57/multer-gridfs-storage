@@ -213,7 +213,11 @@ export class GridFsStorage extends EventEmitter implements StorageEngine {
 	_removeFile(request: Request, file, cb: NodeCallback): void {
 		const options = {bucketName: file.bucketName};
 		const bucket = new GridFSBucket(this.db, options);
-		bucket.delete(file.id, cb);
+		bucket.delete(file.id)
+			.then(() => {
+				cb(null);
+			})
+			.catch(cb);
 	}
 
 	/**
